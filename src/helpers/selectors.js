@@ -1,4 +1,4 @@
-import Appointment from "components/Appointment";
+// import Appointment from "components/Appointment";
 
 export const getAppointmentsForDay = (state, day) => {
   if (state.days.length === 0) {
