@@ -62,7 +62,7 @@ function Appointment(props) {
       {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
-          interviewer={props.interview.interviewer}
+          interviewer={props.interview.interviewer || {} }
           onEdit={onEdit}
           onDelete={onDelete}
         />

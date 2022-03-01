@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 export default function useApplicationData () {
-
   // combined state
   const [state, setState] = useState({
     day: "Monday",
@@ -32,6 +31,22 @@ export default function useApplicationData () {
     });
   }, []);
 
+  // spots remaining function
+  const remainingSpots = (state, appointments) => {
+    let result = [];
+
+    for (let day of state.days) {
+      let spots = 5;
+      for(let appointment of day.appointments) {        
+        if (appointments[appointment].interview) {
+          spots -= 1;
+        }        
+      }   
+      result.push({...day, spots});
+    }
+    return result;
+  }
+
   // Call the props.cancleInterview function with the appointment id and interview as arguments from within the handleDelete function.
   const cancelInterview = (id) => {
     const appointment = {
@@ -44,7 +59,7 @@ export default function useApplicationData () {
     };
 
     return axios.delete(`/api/appointments/${id}`).then(() => {
-      setState({ ...state, appointments });
+      setState({ ...state, appointments, days: remainingSpots(state, appointments) });      
     });
   };
 
@@ -61,7 +76,7 @@ export default function useApplicationData () {
     };
 
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
-      setState({ ...state, appointments });
+      setState({ ...state, appointments, days: remainingSpots(state, appointments) });
     });
   };
 
