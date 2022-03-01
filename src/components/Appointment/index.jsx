@@ -2,19 +2,84 @@ import React from "react";
 import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
+import Form from "./Form";
+import Status from "./Status";
+import Confirm from "./Confirm";
+import useVisualMode from "hooks/useVisualMode";
 
 import "components/Appointment/style.scss";
 
+const EMPTY = "EMPTY";
+const SHOW = "SHOW";
+const CREATE = "CREATE";
+const SAVING = "SAVING";
+const CONFIRM = "CONFIRM";
+const DELETE = "DELETE";
+const EDIT = "EDIT";
 
-function Appointment (props) {
-  // console.log("props", props);
+/////*********************** Appointment Component************************//////
+
+function Appointment(props) {
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
+
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer,
+    };
+    transition(SAVING);
+    props.bookInterview(props.id, interview).then(() => transition(SHOW));
+  }
+
+  // for onConfirm Confirm component
+  function handleDelete(id) {
+    transition(DELETE);
+    props.cancelInterview(id).then(() => transition(EMPTY));
+  }
+
+  // for onEdit Show component
+  function onEdit() {
+    transition(EDIT);
+  }
+  // for onDelete Show component
+  function onDelete() {
+    transition(CONFIRM);
+  }
 
   return (
+
     <article className="appointment">
       {props.time && <Header time={props.time} />}
-      {props.interview ? <Show student={props.interview.student} interviewer={props.interview.interviewer} onEdit={props.onEdit} onDelete={props.onDelete} /> : <Empty />}
-      
+      {/* {props.interview ? <Show student={props.interview.student} interviewer={props.interview.interviewer} onEdit={props.onEdit} onDelete={props.onDelete} /> : <Empty />} */}
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === SHOW && props.interview && (
+        <Show
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
+      )}
+      {mode === CREATE && (
+        <Form 
+          interviewers={props.interviewers} 
+          onCancel={back} 
+          onSave={save} 
+        />
+      )}
+      {mode === SAVING && <Status message={"Saving"} />}
+      {mode === DELETE && <Status message={"Deleting"} />}
+      {mode === CONFIRM && (
+        <Confirm
+          message={"Are you sure would you like to delete?"}
+          onCancel={back}
+          onConfirm={() => handleDelete(props.id)}
+        />
+      )}
     </article>
+
   );
 }
 
