@@ -5,6 +5,7 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 import useVisualMode from "hooks/useVisualMode";
 
 import "components/Appointment/style.scss";
@@ -16,6 +17,8 @@ const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const DELETE = "DELETE";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 /////*********************** Appointment Component************************//////
 
@@ -29,19 +32,21 @@ function Appointment(props) {
       student: name,
       interviewer,
     };
-    transition(SAVING);
-    props.bookInterview(props.id, interview).then(() => transition(SHOW));
+    transition(SAVING);    
+    props.bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => transition(ERROR_SAVE, true));
   }
 
   // for onConfirm Confirm component
   function handleDelete(id) {
     transition(DELETE);
-    props.cancelInterview(id).then(() => transition(EMPTY));
+    props.cancelInterview(id).then(() => transition(EMPTY))
+    .catch(error => transition(ERROR_DELETE, true));
   }
-
   // for onEdit Show component
   function onEdit() {
-    transition(EDIT);
+    transition(EDIT);    
   }
   // for onDelete Show component
   function onDelete() {
@@ -69,6 +74,13 @@ function Appointment(props) {
           onSave={save} 
         />
       )}
+      {mode === EDIT && (
+        <Form 
+          interviewers={props.interviewers} 
+          onCancel={back} 
+          onSave={save} 
+        />
+      )}
       {mode === SAVING && <Status message={"Saving"} />}
       {mode === DELETE && <Status message={"Deleting"} />}
       {mode === CONFIRM && (
@@ -78,6 +90,8 @@ function Appointment(props) {
           onConfirm={() => handleDelete(props.id)}
         />
       )}
+      {mode === ERROR_DELETE && <Error message={"Could not delete appointment"} onClose={back} />}
+      {mode === ERROR_SAVE && <Error message={"Could not save appointment"} onClose={back} />}
     </article>
 
   );

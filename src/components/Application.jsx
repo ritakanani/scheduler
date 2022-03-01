@@ -16,6 +16,7 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
+    interviewers: {}
   });
 
   // // combined state working with object
