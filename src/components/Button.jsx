@@ -4,15 +4,7 @@ import classnames from "classnames";
 import "components/Button.scss";
 
 export default function Button(props) {
-   // let buttonClass = "button";
 
-   // if(props.confirm) {
-   //    buttonClass += " button--confirm";
-   // }
-
-   // if(props.danger) {
-   //    buttonClass += " button--danger";
-   // }
    // These if statement is written by classnames library to create a buttonClass string.
    // which is already installed in node_modules folder 
 

@@ -6,7 +6,7 @@ export default function useVisualMode(initial) {
   
   function transition(mode, replace = false) {
       // setMode(mode); 
-      console.log("first mode", mode)  ;
+      // console.log("first mode", mode);
     if (replace) {
       // make copy of history
       // delete the last element from history array
