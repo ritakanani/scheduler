@@ -1,3 +1,4 @@
+// We are going to create a function called getAppointmentsForDay that will receive two arguments state and day. The function will return an array of appointments for the given day.
 export const getAppointmentsForDay = (state, day) => {
   // console.log("state", state);
   // console.log("day", day);
@@ -35,6 +36,7 @@ export const getInterview = (state, interview) => {
   return result;
 }
 
+// Same as getAppointmentsForDay function, but returning interviewers instead. 
 export const getInterviewersForDay = (state, day) => {
   if (state.days.length === 0) {
     return [];
