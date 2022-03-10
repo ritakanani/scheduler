@@ -42,7 +42,6 @@ export default function Application(props) {
   return (
     <main className="layout">
       <section className="sidebar">
-        {/* Replace this with the sidebar elements during the "Project Setup & Familiarity" activity. */}
         <img
           className="sidebar--centered"
           src="images/logo.png"
@@ -51,10 +50,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={state.days}
-            // day={"Monday"}
-            value={state.day}
-            // setDay={(day) => console.log(day)}
+            days={state.days}            
+            value={state.day}            
             onChange={setDay}
           />
         </nav>
@@ -65,7 +62,6 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
         {appointment}
         <Appointment key={"last"} time={"5pm"} />
       </section>

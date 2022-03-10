@@ -1,30 +1,15 @@
 import { useState } from "react";
 
+
 export default function useVisualMode(initial) {
-  // const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
-  
-  function transition(mode, replace = false) {
-      // setMode(mode);       
-    if (replace) {
-      
-      // make copy of history
-      // delete the last element from history array
-      // set history with modified copy and mode
-      const trimmedHistory = history.slice(0, history.length-1);                   
-      setHistory(prev => [...trimmedHistory, mode]);           
-    } else {      
-      setHistory(previousItem => [...previousItem, mode]);
-    }           
-  }
-  
-  function back() {
-    if (history.length <= 1) {
-      return;
-    }
-    const trimmedHistory = history.slice(0, history.length-1);
-    setHistory(prev => [...trimmedHistory]);    
-  }
-    
-  return { mode: history[history.length-1], transition, back };
+  const transition = function(mode, replace = false) {
+    setHistory(prev =>
+      replace ? [...prev.slice(0, -1), mode] : [...prev, mode]
+    );
+  };
+  const back = function() {
+    setHistory(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
+  };
+  return { mode: history[history.length - 1], transition, back };
 }

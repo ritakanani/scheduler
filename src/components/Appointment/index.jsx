@@ -40,7 +40,7 @@ function Appointment(props) {
 
   // for onConfirm Confirm component
   function handleDelete(id) {
-    transition(DELETE);
+    transition(DELETE, true);
     props.cancelInterview(id).then(() => transition(EMPTY))
     .catch(error => transition(ERROR_DELETE, true));
   }
@@ -56,8 +56,7 @@ function Appointment(props) {
   return (
 
     <article className="appointment">
-      {props.time && <Header time={props.time} />}
-      {/* {props.interview ? <Show student={props.interview.student} interviewer={props.interview.interviewer} onEdit={props.onEdit} onDelete={props.onDelete} /> : <Empty />} */}
+      {props.time && <Header time={props.time} />} 
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && props.interview && (
         <Show

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function useApplicationData () {
   // combined state
@@ -10,11 +10,7 @@ export default function useApplicationData () {
     interviewers: {}
   });
 
-  // // combined state working with object
-  // const state = { day: "Monday", days: [] };
-  // setState({ ...state, day: "Tuesday" });
-  const setDay = (day) => setState({ ...state, day });
-  // const setDays = days => setState(prev => ({ ...prev, days }));
+  const setDay = (day) => setState({ ...state, day });  
 
   useEffect(() => {
     Promise.all([
@@ -64,8 +60,7 @@ export default function useApplicationData () {
   };
 
   // Call the props.bookInterview function with the appointment id and interview as arguments from within the save function. Verify that the correct id and interview values are correct in the console output.
-  const bookInterview = (id, interview) => {
-    // console.log({id, interview});
+  const bookInterview = (id, interview) => {    
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
